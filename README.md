@@ -4,7 +4,7 @@
      alt="logo" width="600" height="400">
 
 This repository is part of the academic course - Numerical-Analysis in [SCE - Shamoon College of Engineering](https://sce.ac.il).
-
+This repository is a fork of the Original Project https://github.com/lihiSabag/Numerical-Analysis-2023.git
 The repo contains an implementation of methods that will be learned within the course to solve numerical analysis problems. Each method has an explanation in a PDF file and a runnable example to assist in understanding and applying these methods. 
 
 ## Implemented Methods
@@ -15,7 +15,6 @@ The following numerical methods are currently implemented in this repository:
 2. LU factorization
 3. Gauss Seidel
 4. Jacobi
-5. SOR - Successive Over Relaxation
 
 #### Roots Finding -Iterative Methods for Nonlinear Systems :
 1. The Bisection method.
@@ -26,14 +25,12 @@ The following numerical methods are currently implemented in this repository:
 1. Linear Interpolation
 2. Polynomial Interpolation
 3. LaGrange
-4. Neville
-5. Cubic Spline
+4. Cubic Spline
 
 #### Numerical Integration methods:
 1. Romberg
 2. Simpson
 3. Trapezoid
-4. Gaussian Quadrature
 
 ### Prerequisites
 
@@ -42,13 +39,3 @@ system requirements:
 * [Python](https://www.python.org/downloads/) >= 3.6
 * [scipy](https://www.scipy.org/)
 * [NumPy](http://www.numpy.org/) 
-
-Open a folder for this project and clone this repository using the following command:
-```
-git clone https://github.com/lihiSabag/Numerical-Analysis-2023.git
-```
-
- open the cmd and navigate to the project folder. Then, run the following command:
-```
-python pip install -r requirements.txt
-```
