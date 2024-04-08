@@ -70,7 +70,6 @@ def lu_solve(A_b):
         print("Upper triangular matrix U:\n", np.array(U))
         B = np.matmul(L, U)
         print("\n", B)
-
         # The segment that computes the solutions of the matrix
         result = backward_substitution(U)
         print(bcolors.OKBLUE, "\nSolution for the system:")

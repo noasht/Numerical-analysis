@@ -18,7 +18,7 @@ def inverse(matrix):
     if n != matrix.shape[1]:
         raise ValueError("Input matrix must be square.")
     if not np.linalg.det(matrix):
-        raise ValueError("Matrix is singular, cannot find its inverse.")
+        raise ValueError("Matrix is singular DET = 0, cannot find its inverse.")
     # Creating an Identity Matrix of the Same Size
     identity = np.identity(n)
 
@@ -101,6 +101,7 @@ if __name__ == '__main__':
         [2, 1, -5, -3, 5],
         [-5, -6, 4, 1, 3],
         [3, -2, -2, -3, 5]])
+
 
     """A = np.array([  [2, 1, 0],
                     [3, -1, 0],
