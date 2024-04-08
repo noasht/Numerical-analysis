@@ -30,7 +30,6 @@ The following numerical methods are currently implemented in this repository:
 #### Numerical Integration methods:
 1. Romberg
 2. Simpson
-3. Trapezoid
 
 ### Prerequisites
 
