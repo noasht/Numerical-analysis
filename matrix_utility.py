@@ -315,3 +315,214 @@ def RowXchange(matrix, vector):
                 max = abs(matrix[i][i])
 
     return [matrix, vector]
+
+
+def DominantDiagonal(matrix, n):
+    for i in range(n):
+        pivot_row = i
+        v_max = matrix[i][i]
+        for j in range(i + 1, n):
+            if abs(matrix[j][i]) > v_max:
+                v_max = abs(matrix[j][i])
+                pivot_row = j
+
+        if not matrix[pivot_row][i]:  # Checking if the diagonal element is zero
+            return matrix, 0  # Matrix is singular
+
+            # Swap the current row with the pivot row
+        if pivot_row != i:
+            # Swap entire rows, including the augmented column
+            SaveRowi = matrix[i].copy()
+            matrix[i] = matrix[pivot_row]
+            matrix[pivot_row] = SaveRowi
+
+    return matrix, 1
+
+
+
+def lowerTriangularMatrix(A,n):
+    L = np.zeros((n,n))
+    L = np.array(L)
+    for i in range(1, n):
+        for j in range(i):
+            L[i,j] = A[i,j]
+    return L
+
+def upperTriangularMatrix(A,n):
+    U = np.zeros((n,n))
+    U = np.array(U)
+    for i in range(n - 1):
+        for j in range(i+1, n):
+            U[i, j] = A[i, j]
+    return U
+
+def diagonalMatrix(A, n):
+    D = np.zeros((n,n))
+    D = np.array(D)
+    for i in range(n):
+        D[i,i] = A[i,i]
+    return D
+
+def norm(mat):
+    size = len(mat)
+    max_row = 0
+    for row in range(size):
+        sum_row = 0
+        for col in range(size):
+            sum_row += abs(mat[row][col])
+        if sum_row > max_row:
+            max_row = sum_row
+    return max_row
+
+def inverseD(D,n):
+    for i in range(n):
+        if D[i, i] != 0:
+            D[i,i] = 1/D[i, i]
+    return D
+
+def inverse(matrix):
+    # 1 = col , 0 = row
+    n = matrix.shape[0]
+    if not np.linalg.det(matrix):
+        raise ValueError
+    # Creating an Identity Matrix of the Same Size
+    identity = np.identity(n)
+
+    # Perform row operations to transform the input matrix into the identity matrix
+    for i in range(n):
+        if matrix[i, i] == 0:
+            pivot_row = i
+            v_max = 0
+            for j in range(i+1, n):
+                if abs(matrix[j][i]) > v_max:
+                    v_max = abs(matrix[j][i])
+                    pivot_row = j
+
+            if not matrix[pivot_row][i]:  # Checking if the diagonal element is zero
+                return i  # Matrix is singular
+
+                # Swap the current row with the pivot row
+            if pivot_row != i:
+                # Swap entire rows, including the augmented column
+                SaveRowi = matrix[i].copy()
+                matrix[i] = matrix[pivot_row]
+                matrix[pivot_row] = SaveRowi
+                SaveRowi = identity[i].copy()
+                identity[i] = identity[pivot_row]
+                identity[pivot_row] = SaveRowi
+
+        if matrix[i, i] != 1:
+            # Scale the current row to make the diagonal element 1
+            scalar = 1.0 / matrix[i, i]
+            elementary_matrix = scalar_multiplication_elementary_matrix(n, i, scalar)
+            matrix = np.dot(elementary_matrix, matrix)
+            identity = np.dot(elementary_matrix, identity)
+
+    # Zero out the elements
+        for j in range(n):
+            if i < j:
+                scalar = -matrix[j, i]
+                elementary_matrix = row_addition_elementary_matrix(n, j, i, scalar)
+                matrix = np.dot(elementary_matrix, matrix)
+                identity = np.dot(elementary_matrix, identity)
+    # Zero out the elements
+    for i in range(n - 1, -1, -1):
+        if matrix[i, i] == 0:
+            raise ValueError("Matrix is singular, cannot find its inverse.")
+        for j in range(n-1, -1, -1):
+            if i > j:
+                scalar = -matrix[j, i]
+                elementary_matrix = row_addition_elementary_matrix(n, j, i, scalar)
+                matrix = np.dot(elementary_matrix, matrix)
+                identity = np.dot(elementary_matrix, identity)
+    for k in range(n):
+        for w in range(n):
+            if abs(matrix[k][w]) < 1e-10:  # Small values are treated as zeros
+                matrix[k][w] = 0
+            if abs(identity[k][w]) < 1e-10:  # Small values are treated as zeros
+                identity[k][w] = 0
+    return identity
+
+
+def Function_for_Checking_Dominant_Diagonal_in_Matrix(matrix):
+    sizeMat = len(matrix)
+    for i in range(sizeMat):
+        sum = 0
+        for j in range(sizeMat):
+            if i != j:
+                sum = sum + abs(matrix[i][j])
+        if matrix[i][i] < sum:
+            return False
+
+
+def gaussianElimination(mat):
+    N = len(mat)
+    singular_flag = forward_substitution(mat)
+    if singular_flag != -1:
+
+        if mat[singular_flag][N]:
+            return "Singular Matrix (Inconsistent System)"
+        else:
+            return "Singular Matrix (May have infinitely many solutions)"
+
+# if matrix is non-singular:
+    forward_substitution_to_diagonal(mat)
+    # get solution to system using backward substitution
+    return backward_substitution(mat)
+
+
+# The function receives an upper triangular matrix and returns a fully ranked matrix
+def forward_substitution(mat):
+    N = len(mat)
+    for k in range(N):
+        pivot_row = k
+        v_max = abs(mat[k][k])  # Setting the maximum value to the diagonal element itself
+        for i in range(k + 1, N):
+            if abs(mat[i][k]) > v_max:
+                v_max = abs(mat[i][k])
+                pivot_row = i
+
+        if not mat[pivot_row][k]:  # Checking if the diagonal element is zero
+            return k  # Matrix is singular
+
+        # Swap the current row with the pivot row
+        if pivot_row != k:
+            # Swap entire rows, including the augmented column
+            SaveRowi = mat[k].copy()
+            mat[k] = mat[pivot_row]
+            mat[pivot_row] = SaveRowi
+        # End Partial Pivoting
+        for i in range(k + 1, N):
+            m = (mat[i][k] / mat[k][k])
+            for j in range(k + 1, N + 1):
+                mat[i][j] -= (mat[k][j] * m)
+                if abs(mat[i][j]) < 1e-10:  # Small values are treated as zeros
+                    mat[i][j] = 0
+
+            mat[i][k] = 0  # Ensure lower triangular elements are zeroed out
+    return -1
+
+# function to calculate the values of the unknowns
+def forward_substitution_to_diagonal(mat):
+    N = len(mat)
+    for k in range(N - 1, -1, -1):
+        scalar = mat[k][k]
+        for j in range(N + 1):
+            mat[k][j] /= scalar
+
+        for i in range(k - 1, -1, -1):
+            scalar = mat[i][k]
+            for j in range(N + 1):
+                mat[i][j] -= mat[k][j] * scalar
+
+def backward_substitution(mat):
+    N = len(mat)
+    x = np.zeros(N)  # An array to store solution
+    # Start calculating from last equation up to the first
+    for i in range(N - 1, -1, -1):
+        x[i] = mat[i][N]
+        # Initialize j to i+1 since matrix is upper triangular
+        for j in range(i + 1, N):
+            x[i] -= mat[i][j] * x[j]
+        x[i] = (x[i] / mat[i][i])
+    return x

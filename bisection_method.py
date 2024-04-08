@@ -26,8 +26,9 @@ Receives 4 parameters:
 Returns variables:
     1.  c - The approximate root of the function f
 """
-def bisection_method(f, a, b, tol=1e-6):
 
+
+def bisection_method(f, a, b, tol=1e-6):
     if np.sign(f(a)) == np.sign(f(b)):
         raise ValueError("The scalars a and b do not bound a root")
     c, k = 0, 0
@@ -48,10 +49,11 @@ def bisection_method(f, a, b, tol=1e-6):
 
 if __name__ == '__main__':
 
-    fun = lambda x: x**2 - 4 * math.sin(x)
+    fun = lambda x: (2 * (x ** 2) - 5 * x + 2) / 4 * x
     try:
-        roots = bisection_method(fun, 1, 3)
-        print(bcolors.OKBLUE, f"\nThe equation f(x) has an approximate root at x = {roots}",bcolors.ENDC,)
+        roots = bisection_method(fun, 0, 3)
+        roots = round(roots)
+        print("\nThe root found using the " + "\033[94m" + "Bisection Method" + "\033[0m" + " is "+ "\033[94m" + f" x = {roots}" + "\033[0m")
 
     except ValueError as e:
         print(str(e))
